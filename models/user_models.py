@@ -47,12 +47,12 @@ class wx_user(models.Model):
             c_total = followers_dict['total']
             m_count = followers_dict['count']
             next_openid = followers_dict['next_openid']
-            print 'get %s users'%m_count
+            print ('get %s users'%m_count)
             if next_openid:
                 m_openids = followers_dict['data']['openid']
                 for openid in m_openids:
                     c_flag +=1
-                    print 'total %s users, now sync the %srd %s .'%(c_total, c_flag, openid)
+                    print ('total %s users, now sync the %srd %s .'%(c_total, c_flag, openid))
                     rs = self.search( [('openid', '=', openid)] )
                     if rs.exists():
                         info = client.wxclient.get_user_info(openid)
@@ -86,7 +86,7 @@ class wx_user(models.Model):
         for obj in self:
             try:
                 wxclient.send_text_message(obj.openid, text)
-            except ClientException, e:
+            except ClientException as e:
                 _logger.info(u'微信消息发送失败 %s'%e)
                 raise exceptions.UserError(u'发送失败 %s'%e)
 
